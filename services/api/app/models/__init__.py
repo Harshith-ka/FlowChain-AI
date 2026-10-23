@@ -24,6 +24,15 @@ from app.models.supply_chain import (
     OrderStatus,
     ShipmentStatus
 )
+from app.models.disruption import (
+    Disruption,
+    DisruptionImpact,
+    RecoveryCase,
+    DisruptionType,
+    DisruptionSeverity,
+    DisruptionStatus,
+    RecoveryCaseStatus
+)
 
 __all__ = [
     "Base",
@@ -53,4 +62,11 @@ __all__ = [
     "OrderPriority",
     "OrderStatus",
     "ShipmentStatus",
+    "Disruption",
+    "DisruptionImpact",
+    "RecoveryCase",
+    "DisruptionType",
+    "DisruptionSeverity",
+    "DisruptionStatus",
+    "RecoveryCaseStatus",
 ]

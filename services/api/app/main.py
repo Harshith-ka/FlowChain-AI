@@ -15,6 +15,10 @@ from app.api.v1.inventory import router as inventory_router
 from app.api.v1.orders import router as orders_router
 from app.api.v1.shipments import router as shipments_router
 from app.api.v1.network import router as network_router
+from app.api.v1.disruptions import router as disruptions_router
+from app.api.v1.optimization import router as optimization_router
+from app.api.v1.agents import router as agents_router
+from app.api.v1.simulations import router as simulations_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -57,6 +61,10 @@ app.include_router(inventory_router, prefix=settings.API_V1_STR)
 app.include_router(orders_router, prefix=settings.API_V1_STR)
 app.include_router(shipments_router, prefix=settings.API_V1_STR)
 app.include_router(network_router, prefix=settings.API_V1_STR)
+app.include_router(disruptions_router, prefix=settings.API_V1_STR)
+app.include_router(optimization_router, prefix=settings.API_V1_STR)
+app.include_router(agents_router, prefix=settings.API_V1_STR)
+app.include_router(simulations_router, prefix=settings.API_V1_STR)
 
 @app.get("/")
 def root():

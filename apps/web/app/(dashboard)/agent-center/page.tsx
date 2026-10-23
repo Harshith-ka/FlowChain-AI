@@ -13,11 +13,77 @@ import {
   Sparkles,
   Terminal,
   ShieldCheck,
-  RefreshCw
+  RefreshCw,
+  Play
 } from "lucide-react";
+import {
+  ReactFlow,
+  Background,
+  Controls,
+  Node,
+  Edge,
+  MarkerType
+} from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
+
+const initialNodes: Node[] = [
+  {
+    id: "1",
+    position: { x: 50, y: 120 },
+    data: { label: "1. Disruption Intelligence" },
+    style: { background: "#1E1014", color: "#EF4444", border: "1px solid #EF4444", borderRadius: "8px", fontSize: "11px", fontWeight: "bold", width: 170 }
+  },
+  {
+    id: "2",
+    position: { x: 280, y: 40 },
+    data: { label: "2. Supplier Recovery" },
+    style: { background: "#111827", color: "#60A5FA", border: "1px solid #3B82F6", borderRadius: "8px", fontSize: "11px", fontWeight: "bold", width: 160 }
+  },
+  {
+    id: "3",
+    position: { x: 280, y: 200 },
+    data: { label: "3. Inventory Optimization" },
+    style: { background: "#111827", color: "#06B6D4", border: "1px solid #06B6D4", borderRadius: "8px", fontSize: "11px", fontWeight: "bold", width: 160 }
+  },
+  {
+    id: "4",
+    position: { x: 500, y: 120 },
+    data: { label: "4. Logistics Routing" },
+    style: { background: "#111827", color: "#C084FC", border: "1px solid #A855F7", borderRadius: "8px", fontSize: "11px", fontWeight: "bold", width: 160 }
+  },
+  {
+    id: "5",
+    position: { x: 720, y: 40 },
+    data: { label: "5. OR-Tools MIP Solver" },
+    style: { background: "#0F2338", color: "#38BDF8", border: "1px solid #0284C7", borderRadius: "8px", fontSize: "11px", fontWeight: "bold", width: 170 }
+  },
+  {
+    id: "6",
+    position: { x: 720, y: 200 },
+    data: { label: "6. Cost & Risk Agent" },
+    style: { background: "#1F1B12", color: "#FBBF24", border: "1px solid #F59E0B", borderRadius: "8px", fontSize: "11px", fontWeight: "bold", width: 160 }
+  },
+  {
+    id: "7",
+    position: { x: 950, y: 120 },
+    data: { label: "7. Recovery Orchestrator (HITL)" },
+    style: { background: "#0D281E", color: "#34D399", border: "2px solid #10B981", borderRadius: "8px", fontSize: "11px", fontWeight: "bold", width: 190 }
+  },
+];
+
+const initialEdges: Edge[] = [
+  { id: "e1-2", source: "1", target: "2", animated: true, style: { stroke: "#3B82F6" }, markerEnd: { type: MarkerType.ArrowClosed } },
+  { id: "e1-3", source: "1", target: "3", animated: true, style: { stroke: "#06B6D4" }, markerEnd: { type: MarkerType.ArrowClosed } },
+  { id: "e2-4", source: "2", target: "4", style: { stroke: "#3B82F6" }, markerEnd: { type: MarkerType.ArrowClosed } },
+  { id: "e3-4", source: "3", target: "4", style: { stroke: "#06B6D4" }, markerEnd: { type: MarkerType.ArrowClosed } },
+  { id: "e4-5", source: "4", target: "5", animated: true, style: { stroke: "#38BDF8" }, markerEnd: { type: MarkerType.ArrowClosed } },
+  { id: "e5-6", source: "5", target: "6", style: { stroke: "#F59E0B" }, markerEnd: { type: MarkerType.ArrowClosed } },
+  { id: "e6-7", source: "6", target: "7", animated: true, style: { stroke: "#10B981" }, markerEnd: { type: MarkerType.ArrowClosed } },
+];
 
 export default function AgentCenterPage() {
   const [selectedAgent, setSelectedAgent] = useState("Recovery Orchestrator");
+  const [isRunning, setIsRunning] = useState(false);
 
   const agents = [
     { name: "Disruption Intelligence Agent", role: "Graph Traversal & Blast Radius", status: "Completed", latency: "42ms", toolsCalled: ["get_disruption", "get_affected_orders", "get_dependencies"], output: "Identified 12 customer orders at risk across 2 SKUs (MCU-X8, RAM-32G)." },
@@ -30,6 +96,13 @@ export default function AgentCenterPage() {
 
   const current = agents.find(a => a.name === selectedAgent) || agents[5];
 
+  const handleRunWorkflow = () => {
+    setIsRunning(true);
+    setTimeout(() => {
+      setIsRunning(false);
+    }, 1200);
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -40,11 +113,19 @@ export default function AgentCenterPage() {
             <span>AI Agent Observability Center & LangGraph Workflows</span>
           </h1>
           <p className="text-xs text-text-secondary mt-0.5">
-            Inspect persistent agent state transitions, tool invocations, Google OR-Tools solver execution, and human interrupts.
+            Real-time stateful DAG execution, tool invocations, Google OR-Tools solver execution, and human interrupts.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
+          <button
+            onClick={handleRunWorkflow}
+            disabled={isRunning}
+            className="px-4 py-2 rounded-lg bg-brand-blue hover:bg-brand-light text-white text-xs font-semibold flex items-center gap-2 shadow-glow transition-all disabled:opacity-50"
+          >
+            {isRunning ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4 text-accent-cyan" />}
+            <span>{isRunning ? "Orchestrating Agents..." : "Trigger LangGraph Workflow"}</span>
+          </button>
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-status-green/15 text-status-green border border-status-green/30 text-xs font-mono font-semibold">
             <span className="w-2 h-2 rounded-full bg-status-green animate-pulse" />
             <span>6/6 AGENTS ACTIVE</span>
@@ -52,7 +133,26 @@ export default function AgentCenterPage() {
         </div>
       </div>
 
-      {/* Main Layout: 6 Agents Grid & Trace Log Inspector */}
+      {/* Interactive React Flow Workflow DAG */}
+      <div className="rounded-xl glass-panel-elevated border border-border p-4 space-y-3">
+        <div className="flex items-center justify-between text-xs text-text-muted font-mono">
+          <span>LangGraph Multi-Agent Stateful Orchestration DAG</span>
+          <span className="text-accent-cyan">Thread ID: #24906b05-WORKFLOW</span>
+        </div>
+        <div className="h-64 w-full bg-[#050914] rounded-lg border border-border/80 overflow-hidden relative">
+          <ReactFlow
+            nodes={initialNodes}
+            edges={initialEdges}
+            fitView
+            attributionPosition="bottom-right"
+          >
+            <Background color="#1E293B" gap={16} />
+            <Controls className="bg-surface border-border text-text-primary" />
+          </ReactFlow>
+        </div>
+      </div>
+
+      {/* Main Layout: 6 Agents List & Trace Log Inspector */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Agents List (1 col) */}
         <div className="space-y-3">

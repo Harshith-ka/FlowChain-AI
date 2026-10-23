@@ -1,0 +1,16 @@
+{
+  "name": "flowchain-ai",
+  "version": "1.0.0",
+  "description": "Autonomous Supply Chain Recovery & Optimization SaaS",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace=@flowchain/web",
+    "dev:api": "pwsh -Command \"& .\\services\\api\\venv\\Scripts\\python -m uvicorn app.main:app --reload --port 8000 --app-dir services/api\"",
+    "build:web": "npm run build --workspace=@flowchain/web",
+    "test:api": "pwsh -Command \"& .\\services\\api\\venv\\Scripts\\pytest services/api/tests -v\""
+  }
+}

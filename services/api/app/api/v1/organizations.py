@@ -205,3 +205,25 @@ def add_organization_member(
         is_active=new_member.is_active,
         created_at=new_member.created_at
     )
+
+@router.post("/{org_id}/seed")
+def seed_organization_data(
+    org_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    from app.services.seed_service import seed_synthetic_supply_chain
+    member = (
+        db.query(OrganizationMember)
+        .filter(
+            OrganizationMember.organization_id == org_id,
+            OrganizationMember.user_id == current_user.id,
+            OrganizationMember.is_active == True
+        )
+        .first()
+    )
+    if not member and not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Access denied to seed organization data")
+    
+    result = seed_synthetic_supply_chain(db=db, organization_id=org_id)
+    return result

@@ -2,6 +2,28 @@ from app.core.database import Base
 from app.models.base import BaseEntity, TimestampMixin
 from app.models.user import User
 from app.models.organization import Organization, OrganizationMember, UserRole
+from app.models.supply_chain import (
+    Product,
+    Supplier,
+    SupplierProduct,
+    Facility,
+    Warehouse,
+    Inventory,
+    InventoryReservation,
+    InventoryMovement,
+    PurchaseOrder,
+    PurchaseOrderItem,
+    CustomerOrder,
+    CustomerOrderItem,
+    TransportRoute,
+    Shipment,
+    ShipmentItem,
+    FacilityType,
+    TransportMode,
+    OrderPriority,
+    OrderStatus,
+    ShipmentStatus
+)
 
 __all__ = [
     "Base",
@@ -11,4 +33,24 @@ __all__ = [
     "Organization",
     "OrganizationMember",
     "UserRole",
+    "Product",
+    "Supplier",
+    "SupplierProduct",
+    "Facility",
+    "Warehouse",
+    "Inventory",
+    "InventoryReservation",
+    "InventoryMovement",
+    "PurchaseOrder",
+    "PurchaseOrderItem",
+    "CustomerOrder",
+    "CustomerOrderItem",
+    "TransportRoute",
+    "Shipment",
+    "ShipmentItem",
+    "FacilityType",
+    "TransportMode",
+    "OrderPriority",
+    "OrderStatus",
+    "ShipmentStatus",
 ]

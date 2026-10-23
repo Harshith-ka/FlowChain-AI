@@ -8,6 +8,13 @@ import app.models  # Ensure all models are registered with Base
 from app.api.v1.auth import router as auth_router
 from app.api.v1.organizations import router as org_router
 from app.api.v1.health import router as health_router
+from app.api.v1.suppliers import router as suppliers_router
+from app.api.v1.products import router as products_router
+from app.api.v1.warehouses import router as warehouses_router
+from app.api.v1.inventory import router as inventory_router
+from app.api.v1.orders import router as orders_router
+from app.api.v1.shipments import router as shipments_router
+from app.api.v1.network import router as network_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -43,6 +50,13 @@ app.add_middleware(
 app.include_router(health_router, prefix=settings.API_V1_STR)
 app.include_router(auth_router, prefix=settings.API_V1_STR)
 app.include_router(org_router, prefix=settings.API_V1_STR)
+app.include_router(suppliers_router, prefix=settings.API_V1_STR)
+app.include_router(products_router, prefix=settings.API_V1_STR)
+app.include_router(warehouses_router, prefix=settings.API_V1_STR)
+app.include_router(inventory_router, prefix=settings.API_V1_STR)
+app.include_router(orders_router, prefix=settings.API_V1_STR)
+app.include_router(shipments_router, prefix=settings.API_V1_STR)
+app.include_router(network_router, prefix=settings.API_V1_STR)
 
 @app.get("/")
 def root():
